@@ -4,18 +4,39 @@
  */
 package prg381m2;
 
-/**
- *
- * @author hdesign
- */
-public class PRG381M2 {
+import prg381m2.prg381m2.Model.DBConnectionAppointment;
+import prg381m2.prg381m2.Model.Initializer;
 
-    /**
-     * @param args the command line arguments
-     */
+public class PRG381M2 {
+    
+ 
+
     public static void main(String[] args) {
+        
+            try{
+                DBConnectionAppointment db = new DBConnectionAppointment();
+                db.connect();
+                
+                Initializer initializer = new Initializer(db.getConnection());
+                initializer.createTable();
+                
+            }catch(ClassNotFoundException ex){
+                
+                ex.printStackTrace();
+            
+            }
+            
+            }
+        }
+        
+        
+        
+            
+        
+        
+
         // TODO code application logic here
         //Testing if this will commit and push to repo
-    }
+   
     
-}
+

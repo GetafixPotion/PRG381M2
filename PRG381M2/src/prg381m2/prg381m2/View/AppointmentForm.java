@@ -4,10 +4,17 @@
  */
 package prg381m2.prg381m2.View;
 
-/**
- *
- * @author demic
- */
+import javax.swing.JOptionPane;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import prg381m2.prg381m2.Model.AppointmentDA;
+import prg381m2.prg381m2.Model.Appointment;
+import prg381m2.prg381m2.Model.DBConnectionAppointment;
+import java.sql.Connection;
+
+ 
+    
 public class AppointmentForm extends javax.swing.JFrame {
 
     /**
@@ -64,6 +71,11 @@ public class AppointmentForm extends javax.swing.JFrame {
 
         BtnAdd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         BtnAdd.setText("Add Appointment");
+        BtnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAddActionPerformed(evt);
+            }
+        });
 
         btnView.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnView.setText("View Appointments");
@@ -88,6 +100,11 @@ public class AppointmentForm extends javax.swing.JFrame {
         txtDate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         txtName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNameActionPerformed(evt);
+            }
+        });
 
         cmbCounselor.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -169,6 +186,45 @@ public class AppointmentForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BtnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAddActionPerformed
+        String StudentName = txtName.getText().trim();
+        String CounselorName = (String) cmbCounselor.getSelectedItem();
+        String DateText = txtDate.getText().trim();
+        String TimeText = (String) cmbTime.getSelectedItem();
+        String Status = "Scheduled";
+        
+        //Validation for empty fields
+        if (StudentName.isEmpty() || CounselorName == null || DateText.isEmpty() || TimeText == null) {
+        JOptionPane.showMessageDialog(this, "Please fill in all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
+        
+        
+        // Parse date and time
+          LocalDate appointmentDate = LocalDate.parse(DateText, DateTimeFormatter.ofPattern("y/MM/dd"));
+          LocalTime appointmentTime = LocalTime.parse(TimeText, DateTimeFormatter.ofPattern("HH:mm"));
+
+       
+        //Appointment object
+        Appointment newAppointment = new Appointment(0, StudentName, CounselorName,appointmentDate, appointmentTime, Status);
+
+        DBConnectionAppointment dbConn = new DBConnectionAppointment();
+        Connection conn = dbConn.getConnection();
+        
+       // Save to DB
+        AppointmentDA dao = new AppointmentDA(conn);
+        boolean success = dao.add(newAppointment);
+  
+        
+
+       
+    }
+    }//GEN-LAST:event_BtnAddActionPerformed
+
+    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNameActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -213,4 +269,9 @@ public class AppointmentForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblTime;
     private javax.swing.JTable tblAppointments;
     // End of variables declaration//GEN-END:variables
+    private javax.swing.JFormattedTextField txtDate;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JComboBox<String> cmbCounselor;
+    private javax.swing.JComboBox<String> cmbTime;
+
 }
