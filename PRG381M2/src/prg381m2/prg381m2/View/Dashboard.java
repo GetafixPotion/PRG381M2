@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package prg381m2;
+package prg381m2.prg381m2.View;
+
+import prg381m2.CounselorManagement;
 
 /**
  *
@@ -93,7 +95,6 @@ public class Dashboard extends javax.swing.JFrame {
         AppointmentsBtn.setBackground(new java.awt.Color(255, 122, 53));
         AppointmentsBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         AppointmentsBtn.setText("Appointments");
-        AppointmentsBtn.setActionCommand("Appointments");
         AppointmentsBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AppointmentsBtn.setName(""); // NOI18N
 
