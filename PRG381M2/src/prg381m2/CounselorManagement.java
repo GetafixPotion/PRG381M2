@@ -4,20 +4,29 @@
  */
 package prg381m2;
 import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author hdesign
  */
 public class CounselorManagement extends javax.swing.JFrame {
-
+    
+DBConnection db = new DBConnection();
     /**
      * Creates new form CounselorManagement
      */
     public CounselorManagement() {
-        initComponents();
+       initComponents();
+         try {
+        db.connect();
+    } catch (ClassNotFoundException ex) {
+        ex.printStackTrace();
     }
-
+         
+    }
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,10 +44,8 @@ public class CounselorManagement extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        counselorName = new javax.swing.JTextField();
+        javax.swing.JTextField counselorName = new javax.swing.JTextField();
         specialization = new javax.swing.JComboBox<>();
-        checkBoxYes = new javax.swing.JCheckBox();
-        checkBoxNo = new javax.swing.JCheckBox();
         addCounselorBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         counselorTable = new javax.swing.JTable();
@@ -46,6 +53,7 @@ public class CounselorManagement extends javax.swing.JFrame {
         updateCounselorBtn = new javax.swing.JButton();
         deleteCounselorBtn = new javax.swing.JButton();
         exitBtn = new javax.swing.JButton();
+        availibility = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +68,11 @@ public class CounselorManagement extends javax.swing.JFrame {
         homeBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         homeBtn.setForeground(new java.awt.Color(255, 255, 255));
         homeBtn.setText("HOME");
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -101,14 +114,15 @@ public class CounselorManagement extends javax.swing.JFrame {
 
         specialization.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clinical", "Relationships", "Trauma", "Career", "Substance abuse/addiction" }));
 
-        checkBoxYes.setText("Yes");
-
-        checkBoxNo.setText("No");
-
         addCounselorBtn.setBackground(new java.awt.Color(255, 122, 53));
         addCounselorBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         addCounselorBtn.setForeground(new java.awt.Color(255, 255, 255));
         addCounselorBtn.setText("Add Counselor");
+        addCounselorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCounselorBtnActionPerformed(evt);
+            }
+        });
 
         counselorTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,16 +149,31 @@ public class CounselorManagement extends javax.swing.JFrame {
         viewAllCounselorsBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         viewAllCounselorsBtn.setForeground(new java.awt.Color(255, 255, 255));
         viewAllCounselorsBtn.setText("View All Counselors");
+        viewAllCounselorsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAllCounselorsBtnActionPerformed(evt);
+            }
+        });
 
         updateCounselorBtn.setBackground(new java.awt.Color(255, 122, 53));
         updateCounselorBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         updateCounselorBtn.setForeground(new java.awt.Color(255, 255, 255));
         updateCounselorBtn.setText("Update Counselor");
+        updateCounselorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateCounselorBtnActionPerformed(evt);
+            }
+        });
 
         deleteCounselorBtn.setBackground(new java.awt.Color(255, 122, 53));
         deleteCounselorBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         deleteCounselorBtn.setForeground(new java.awt.Color(255, 255, 255));
         deleteCounselorBtn.setText("Delete Counselor");
+        deleteCounselorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteCounselorBtnActionPerformed(evt);
+            }
+        });
 
         exitBtn.setBackground(new java.awt.Color(255, 51, 0));
         exitBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -155,6 +184,8 @@ public class CounselorManagement extends javax.swing.JFrame {
                 exitBtnActionPerformed(evt);
             }
         });
+
+        availibility.setText("Enter Availibility...");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -182,10 +213,7 @@ public class CounselorManagement extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(counselorName)
                                     .addComponent(specialization, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(checkBoxYes, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(checkBoxNo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(availibility))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(addCounselorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -220,9 +248,8 @@ public class CounselorManagement extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkBoxYes)
-                    .addComponent(checkBoxNo)
-                    .addComponent(addCounselorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(addCounselorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(availibility, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viewAllCounselorsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -260,11 +287,87 @@ public class CounselorManagement extends javax.swing.JFrame {
             "Exit Confirmation",
             JOptionPane.YES_NO_OPTION);
 
-    if (confirm == JOptionPane.YES_OPTION) {
-        System.exit(0); // This exits the entire app
-    }
-        
+        if (confirm == JOptionPane.YES_OPTION) {
+            System.exit(0); // This exits the entire app
+        }
+
     }//GEN-LAST:event_exitBtnActionPerformed
+
+    private void deleteCounselorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCounselorBtnActionPerformed
+        // TODO add your handling code here:
+         String name = counselorName.getText();
+
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter the counselor's name to delete.");
+            return;
+        }
+
+        db.delete(name);
+        JOptionPane.showMessageDialog(this, "Counselor deleted.");
+
+    name.setText("");
+    
+    availibiLity.setText("");
+    }//GEN-LAST:event_deleteCounselorBtnActionPerformed
+
+    private void updateCounselorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCounselorBtnActionPerformed
+        // TODO add your handling code here:
+
+        String name = counselorName.getText();
+        String specializationText = (String) specialization.getSelectedItem();
+        String availabiLity = availibility.getText();
+
+        if (name.isEmpty() || specializationText == null || availabiLity.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter all fields to update.");
+            return;
+        }
+
+        db.update(name, specializationText, availabiLity);
+        JOptionPane.showMessageDialog(this, "Counselor updated.");
+
+    counselorName.setText("");
+    specialization.setSelectedItem("");
+    availability.setText("");
+    }
+
+    }//GEN-LAST:event_updateCounselorBtnActionPerformed
+
+    private void viewAllCounselorsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllCounselorsBtnActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) counselorTable.getModel();
+
+        for(String[] row: db.view()){
+            model.addRow(row);
+        }
+    }//GEN-LAST:event_viewAllCounselorsBtnActionPerformed
+
+    private void addCounselorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCounselorBtnActionPerformed
+        // TODO add your handling code here:
+       String name = counselorName.getText();
+       String specializationText = (String) specialization.getSelectedItem();
+       String availability = availibility.getText();
+
+        if (name.isEmpty() || specializationText == null || availability.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter all fields",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } 
+        else {
+            db.add(name, specializationText, availability);
+            JOptionPane.showMessageDialog(this, "Counselor added to database",
+                    "Confirm!",
+                    JOptionPane.INFORMATION_MESSAGE);
+            
+}
+    }//GEN-LAST:event_addCounselorBtnActionPerformed
+
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+        // TODO add your handling code here:
+        new Dashboard().setVisible(true); // Open new form
+        this.dispose();
+
+    }//GEN-LAST:event_homeBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,15 +400,13 @@ public class CounselorManagement extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CounselorManagement().setVisible(true);
-            }
+}
         });
-    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCounselorBtn;
-    private javax.swing.JCheckBox checkBoxNo;
-    private javax.swing.JCheckBox checkBoxYes;
-    private javax.swing.JTextField counselorName;
+    private javax.swing.JTextField availibility;
     private javax.swing.JTable counselorTable;
     private javax.swing.JButton deleteCounselorBtn;
     private javax.swing.JButton exitBtn;
@@ -322,4 +423,5 @@ public class CounselorManagement extends javax.swing.JFrame {
     private javax.swing.JButton updateCounselorBtn;
     private javax.swing.JButton viewAllCounselorsBtn;
     // End of variables declaration//GEN-END:variables
+}
 }
