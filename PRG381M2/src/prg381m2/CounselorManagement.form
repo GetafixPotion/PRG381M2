@@ -73,9 +73,9 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="counselorName" max="32767" attributes="0"/>
                                       <Component id="specialization" max="32767" attributes="0"/>
                                       <Component id="availibility" max="32767" attributes="0"/>
+                                      <Component id="nameCounselor" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="addCounselorBtn" min="-2" pref="137" max="-2" attributes="0"/>
@@ -114,7 +114,7 @@
                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="counselorName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nameCounselor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -238,15 +238,6 @@
             <Property name="text" type="java.lang.String" value="Availability: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="counselorName">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Enter Counselor Name..."/>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-          </AuxValues>
-        </Component>
         <Component class="javax.swing.JComboBox" name="specialization">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -293,7 +284,7 @@
                   <Table columnCount="3" rowCount="4">
                     <Column editable="true" title="Name" type="java.lang.String"/>
                     <Column editable="true" title="Specialization" type="java.lang.String"/>
-                    <Column editable="true" title="Availability" type="java.lang.Boolean"/>
+                    <Column editable="true" title="Availability" type="java.lang.String"/>
                   </Table>
                 </Property>
               </Properties>
@@ -372,6 +363,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Enter Availibility..."/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="nameCounselor">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Enter name"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nameCounselorActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

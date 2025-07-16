@@ -38,7 +38,7 @@ public class DBConnection {
     public void createTable() {
         try {
             String query = "CREATE TABLE Counselor (" +
-                           "CounselorName VARCHAR(20), " +
+                           "NameCounselor VARCHAR(20), " +
                            "Specialization VARCHAR(20), " +
                            "Availibility VARCHAR(20))";
             Statement stmt = this.con.createStatement();
@@ -56,7 +56,7 @@ public class DBConnection {
             ResultSet rs = this.con.createStatement().executeQuery(query);
 
             while (rs.next()) {
-                String name = rs.getString("CounselorName");
+                String name = rs.getString("NameCounselor");
                 String spec = rs.getString("Specialization");
                 String avail = rs.getString("Availibility");
                 dataList.add(new String[]{name, spec, avail});
@@ -69,7 +69,7 @@ public class DBConnection {
 
     public void add(String name, String specialization, String availability) {
         try {
-            String query = "INSERT INTO Counselor (CounselorName, Specialization, Availibility) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Counselor (NameCounselor, Specialization, Availibility) VALUES (?, ?, ?)";
             PreparedStatement ps = this.con.prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, specialization);
@@ -82,7 +82,7 @@ public class DBConnection {
 
     public void delete(String name) {
         try {
-            String query = "DELETE FROM Counselor WHERE CounselorName = ?";
+            String query = "DELETE FROM Counselor WHERE NameCounselor = ?";
             PreparedStatement ps = this.con.prepareStatement(query);
             ps.setString(1, name);
             ps.executeUpdate();
@@ -93,7 +93,7 @@ public class DBConnection {
 
     public void update(String name, String specialization, String availability) {
         try {
-            String query = "UPDATE Counselor SET Specialization = ?, Availibility = ? WHERE CounselorName = ?";
+            String query = "UPDATE Counselor SET Specialization = ?, Availibility = ? WHERE NameCounselor = ?";
             PreparedStatement ps = this.con.prepareStatement(query);
             ps.setString(1, specialization);
             ps.setString(2, availability);

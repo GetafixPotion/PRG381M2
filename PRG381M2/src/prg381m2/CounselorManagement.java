@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package prg381m2;
+import prg381m2.prg381m2.View.Dashboard;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 public class CounselorManagement extends javax.swing.JFrame {
     
 DBConnection db = new DBConnection();
+    
     /**
      * Creates new form CounselorManagement
      */
@@ -44,7 +46,6 @@ DBConnection db = new DBConnection();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        javax.swing.JTextField counselorName = new javax.swing.JTextField();
         specialization = new javax.swing.JComboBox<>();
         addCounselorBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -54,6 +55,7 @@ DBConnection db = new DBConnection();
         deleteCounselorBtn = new javax.swing.JButton();
         exitBtn = new javax.swing.JButton();
         availibility = new javax.swing.JTextField();
+        nameCounselor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,8 +112,6 @@ DBConnection db = new DBConnection();
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLabel5.setText("Availability: ");
 
-        counselorName.setText("Enter Counselor Name...");
-
         specialization.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clinical", "Relationships", "Trauma", "Career", "Substance abuse/addiction" }));
 
         addCounselorBtn.setBackground(new java.awt.Color(255, 122, 53));
@@ -136,7 +136,7 @@ DBConnection db = new DBConnection();
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -187,6 +187,13 @@ DBConnection db = new DBConnection();
 
         availibility.setText("Enter Availibility...");
 
+        nameCounselor.setText("Enter name");
+        nameCounselor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameCounselorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -211,9 +218,9 @@ DBConnection db = new DBConnection();
                                     .addComponent(jLabel3))
                                 .addGap(67, 67, 67)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(counselorName)
                                     .addComponent(specialization, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(availibility))
+                                    .addComponent(availibility)
+                                    .addComponent(nameCounselor))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(addCounselorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -240,7 +247,7 @@ DBConnection db = new DBConnection();
                 .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(counselorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -290,12 +297,11 @@ DBConnection db = new DBConnection();
         if (confirm == JOptionPane.YES_OPTION) {
             System.exit(0); // This exits the entire app
         }
-
     }//GEN-LAST:event_exitBtnActionPerformed
 
     private void deleteCounselorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCounselorBtnActionPerformed
         // TODO add your handling code here:
-         String name = counselorName.getText();
+        String name = nameCounselor.getText();
 
         if (name.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter the counselor's name to delete.");
@@ -305,15 +311,14 @@ DBConnection db = new DBConnection();
         db.delete(name);
         JOptionPane.showMessageDialog(this, "Counselor deleted.");
 
-    name.setText("");
-    
-    availibiLity.setText("");
+        nameCounselor.setText("");
+        availibility.setText("");
     }//GEN-LAST:event_deleteCounselorBtnActionPerformed
 
     private void updateCounselorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCounselorBtnActionPerformed
         // TODO add your handling code here:
 
-        String name = counselorName.getText();
+        String name = nameCounselor.getText();
         String specializationText = (String) specialization.getSelectedItem();
         String availabiLity = availibility.getText();
 
@@ -325,49 +330,54 @@ DBConnection db = new DBConnection();
         db.update(name, specializationText, availabiLity);
         JOptionPane.showMessageDialog(this, "Counselor updated.");
 
-    counselorName.setText("");
-    specialization.setSelectedItem("");
-    availability.setText("");
-    }
-
+        nameCounselor.setText("");
+        specialization.setSelectedItem("");
+        availibility.setText("");
     }//GEN-LAST:event_updateCounselorBtnActionPerformed
 
     private void viewAllCounselorsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllCounselorsBtnActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) counselorTable.getModel();
+model.setRowCount(0); // Clear previous rows
 
-        for(String[] row: db.view()){
-            model.addRow(row);
-        }
+for(String[] row: db.view()) {
+    model.addRow(row);
+}
+
     }//GEN-LAST:event_viewAllCounselorsBtnActionPerformed
 
     private void addCounselorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCounselorBtnActionPerformed
         // TODO add your handling code here:
-       String name = counselorName.getText();
-       String specializationText = (String) specialization.getSelectedItem();
-       String availability = availibility.getText();
+        String name = nameCounselor.getText();
+        String specializationText = (String) specialization.getSelectedItem();
+        String availability = availibility.getText();
 
         if (name.isEmpty() || specializationText == null || availability.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                    "Please enter all fields",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } 
+                "Please enter all fields",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
         else {
             db.add(name, specializationText, availability);
             JOptionPane.showMessageDialog(this, "Counselor added to database",
-                    "Confirm!",
-                    JOptionPane.INFORMATION_MESSAGE);
-            
-}
+                "Confirm!",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }//GEN-LAST:event_addCounselorBtnActionPerformed
 
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
-        new Dashboard().setVisible(true); // Open new form
+         // Open new form
+        Dashboard dashboard = new Dashboard();
+        dashboard.setVisible(true);
         this.dispose();
-
     }//GEN-LAST:event_homeBtnActionPerformed
+
+    private void nameCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameCounselorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameCounselorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -419,9 +429,10 @@ DBConnection db = new DBConnection();
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField nameCounselor;
     private javax.swing.JComboBox<String> specialization;
     private javax.swing.JButton updateCounselorBtn;
     private javax.swing.JButton viewAllCounselorsBtn;
     // End of variables declaration//GEN-END:variables
 }
-}
+
