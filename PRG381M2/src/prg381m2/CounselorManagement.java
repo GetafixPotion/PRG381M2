@@ -23,8 +23,10 @@ DBConnection db = new DBConnection();
        initComponents();
          try {
         db.connect();
+        db.createTable(); // oonly run once or handle it with IF NOT EXISTS logic
     } catch (ClassNotFoundException ex) {
         ex.printStackTrace();
+    
     }
          
     }
@@ -338,7 +340,7 @@ DBConnection db = new DBConnection();
     private void viewAllCounselorsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllCounselorsBtnActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) counselorTable.getModel();
-model.setRowCount(0); // Clear previous rows
+        model.setRowCount(0); // Clear previous rows
 
 for(String[] row: db.view()) {
     model.addRow(row);
