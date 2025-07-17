@@ -97,6 +97,11 @@ public class Dashboard extends javax.swing.JFrame {
         AppointmentsBtn.setText("Appointments");
         AppointmentsBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AppointmentsBtn.setName(""); // NOI18N
+        AppointmentsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AppointmentsBtnActionPerformed(evt);
+            }
+        });
 
         AppointmentTxt.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         AppointmentTxt.setText("Make an appointment with");
@@ -140,6 +145,11 @@ public class Dashboard extends javax.swing.JFrame {
         FeedbackBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         FeedbackBtn.setText("Feedback");
         FeedbackBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        FeedbackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FeedbackBtnActionPerformed(evt);
+            }
+        });
 
         FeedbaclTxt.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         FeedbaclTxt.setText("We appreciate your feedback.");
@@ -252,6 +262,16 @@ public class Dashboard extends javax.swing.JFrame {
     private void ExitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitBtnActionPerformed
         System.exit(0);
     }//GEN-LAST:event_ExitBtnActionPerformed
+
+    private void FeedbackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FeedbackBtnActionPerformed
+        new FeedbackForm().setVisible(true); // Open new form
+        dispose();
+    }//GEN-LAST:event_FeedbackBtnActionPerformed
+
+    private void AppointmentsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AppointmentsBtnActionPerformed
+        new AppointmentsForm().setVisible(true); // Open new form
+        dispose();
+    }//GEN-LAST:event_AppointmentsBtnActionPerformed
 
     /**
      * @param args the command line arguments
