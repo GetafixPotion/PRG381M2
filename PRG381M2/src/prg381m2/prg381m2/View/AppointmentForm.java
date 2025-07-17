@@ -12,6 +12,9 @@ import prg381m2.prg381m2.Model.AppointmentDA;
 import prg381m2.prg381m2.Model.Appointment;
 import prg381m2.prg381m2.Model.DBConnectionAppointment;
 import java.sql.Connection;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 
  
     
@@ -48,8 +51,12 @@ public class AppointmentForm extends javax.swing.JFrame {
         javax.swing.JTextField txtName = new javax.swing.JTextField();
         javax.swing.JComboBox<String> cmbCounselor = new javax.swing.JComboBox<>();
         javax.swing.JComboBox<String> cmbTime = new javax.swing.JComboBox<>();
+        BtnHome = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 153, 0));
+        setFocusableWindowState(false);
 
         lblAppointment.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblAppointment.setText("Appointment Management");
@@ -66,10 +73,19 @@ public class AppointmentForm extends javax.swing.JFrame {
         lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblStudent.setText("Student Name:");
 
+        btnUpdate.setBackground(new java.awt.Color(255, 122, 53));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Update Appointment");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
+        BtnAdd.setBackground(new java.awt.Color(255, 122, 53));
         BtnAdd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        BtnAdd.setForeground(new java.awt.Color(255, 255, 255));
         BtnAdd.setText("Add Appointment");
         BtnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,21 +93,35 @@ public class AppointmentForm extends javax.swing.JFrame {
             }
         });
 
+        btnView.setBackground(new java.awt.Color(255, 122, 53));
         btnView.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnView.setForeground(new java.awt.Color(255, 255, 255));
         btnView.setText("View Appointments");
+        btnView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewActionPerformed(evt);
+            }
+        });
 
+        BtnCancel.setBackground(new java.awt.Color(255, 122, 53));
         BtnCancel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        BtnCancel.setForeground(new java.awt.Color(255, 255, 255));
         BtnCancel.setText("Cancel Appointment");
+        BtnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelActionPerformed(evt);
+            }
+        });
 
         tblAppointments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Student Name", "Counselor", "Date", "Time", "Status"
+                "Student Name", "Counselor", "Date", "Time", "Status", "ID"
             }
         ));
         jScrollPane1.setViewportView(tblAppointments);
@@ -111,6 +141,27 @@ public class AppointmentForm extends javax.swing.JFrame {
         cmbTime.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00" }));
 
+        BtnHome.setBackground(new java.awt.Color(255, 122, 53));
+        BtnHome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BtnHome.setForeground(new java.awt.Color(255, 255, 255));
+        BtnHome.setText("Home");
+        BtnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnHomeActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,44 +170,56 @@ public class AppointmentForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblStudent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtName)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(BtnAdd)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnUpdate)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(BtnCancel)))
-                                .addGap(18, 18, 18)
-                                .addComponent(btnView))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(lblTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblStudent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(28, 28, 28)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtName)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cmbCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cmbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(70, 70, 70)
+                                        .addComponent(lblAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(BtnAdd)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnUpdate)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(BtnCancel)
+                                        .addGap(36, 36, 36)))
+                                .addComponent(btnView)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(37, 37, 37))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(414, 414, 414)
+                .addComponent(BtnHome)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(lblAppointment)
-                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(lblAppointment))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStudent)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -164,7 +227,7 @@ public class AppointmentForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cmbCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDate)
                     .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -179,7 +242,9 @@ public class AppointmentForm extends javax.swing.JFrame {
                     .addComponent(BtnCancel)
                     .addComponent(btnView))
                 .addGap(19, 19, 19)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(BtnHome)
                 .addGap(12, 12, 12))
         );
 
@@ -211,7 +276,7 @@ public class AppointmentForm extends javax.swing.JFrame {
         
        // Save to DB
         AppointmentDA dao = new AppointmentDA(conn);
-        boolean success = dao.add(newAppointment);
+        dao.add(newAppointment);
   
         
 
@@ -222,6 +287,96 @@ public class AppointmentForm extends javax.swing.JFrame {
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNameActionPerformed
+
+    private void BtnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHomeActionPerformed
+        
+        Dashboard dashboard = new Dashboard();
+        dashboard.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnHomeActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        //Get row the user selected
+        int selectedRow = tblAppointments.getSelectedRow();
+        
+        //Check if a row is selected 
+        if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select an appointment to update.", "No Selection", JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+       
+        //populate the selected row values into the textboxes and comboboxes
+        String StudentName = (String) tblAppointments.getValueAt(selectedRow, 0);
+        String CounselorName = (String) tblAppointments.getValueAt(selectedRow, 1);
+        String DateText = (String) tblAppointments.getValueAt(selectedRow, 2);
+        String TimeText = (String) tblAppointments.getValueAt(selectedRow, 3);
+
+        //Check if the combo boxes and textboxes is empty
+        if (StudentName.isEmpty() || CounselorName == null || DateText.isEmpty() || TimeText == null) {
+             JOptionPane.showMessageDialog(this, "Please fill in all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
+              return;
+            }
+    
+          // Parse date and time
+          LocalDate appointmentDate = LocalDate.parse(DateText, DateTimeFormatter.ofPattern("y/MM/dd"));
+          LocalTime appointmentTime = LocalTime.parse(TimeText, DateTimeFormatter.ofPattern("HH:mm"));
+          
+           String Status = "Rescheduled";
+           
+           //Appointment object
+            Appointment updateAppointment = new Appointment(0, StudentName, CounselorName,appointmentDate, appointmentTime, Status);
+
+             DBConnectionAppointment dbConn = new DBConnectionAppointment();
+             Connection conn = dbConn.getConnection();
+        
+            // Save to DB
+            AppointmentDA dao = new AppointmentDA(conn);
+            dao.updateAppointment(updateAppointment);
+           
+           
+           
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void BtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelActionPerformed
+        //Get row the user selected
+        int selectedRow = tblAppointments.getSelectedRow();
+        
+        //Check if a row is selected 
+        if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select an appointment to update.", "No Selection", JOptionPane.ERROR_MESSAGE);
+        return;
+        }
+       
+        int ID = (int) tblAppointments.getValueAt(selectedRow, 4);
+        DBConnectionAppointment dbConn = new DBConnectionAppointment();
+        Connection conn = dbConn.getConnection();
+        
+        AppointmentDA dao = new AppointmentDA(conn);
+        
+        dao.deleteAppointment(ID);
+       
+       
+
+    }//GEN-LAST:event_BtnCancelActionPerformed
+
+    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
+        // Connect and get data
+        DBConnectionAppointment dbConn = new DBConnectionAppointment();
+        Connection conn = dbConn.getConnection();
+        
+        AppointmentDA da = new AppointmentDA(conn);
+        List<Appointment> list = da.getAllAppointments();
+
+        // Clear and fill table
+        DefaultTableModel model = (DefaultTableModel) tblAppointments.getModel();
+        model.setRowCount(0);
+
+        for (Appointment a : list) {
+            model.addRow(new Object[] {
+                a.getId(), a.getStudentName(), a.getCounselorname(),
+                a.getAppointmentdate(), a.getAppointmentTime(), a.getStatus()
+            });}
+    }//GEN-LAST:event_btnViewActionPerformed
 
     
     
@@ -262,7 +417,9 @@ public class AppointmentForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnHome;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAppointment;
     private javax.swing.JLabel lblDate;
