@@ -6,7 +6,7 @@ package prg381m2;
 
 import prg381m2.prg381m2.Model.DBConnectionAppointment;
 import prg381m2.prg381m2.Model.Initializer;
-import prg381m2.prg381m2.View.AppointmentForm;
+import prg381m2.prg381m2.View.Dashboard;
 import javax.swing.SwingUtilities;
 
 public class PRG381M2 {
@@ -25,7 +25,7 @@ public class PRG381M2 {
 
         // Launch the form in the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
-            new AppointmentForm().setVisible(true);
+            new Dashboard().setVisible(true);
         });
     }
 }
