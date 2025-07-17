@@ -29,14 +29,18 @@ public class DBConnectionAppointment {
  
         //Dynamically load JDBC driver class at runtime
          Class.forName(Driver);
+         
+         //establish connection to database
         this.con = DriverManager.getConnection(JDBC_URL);
         
+        // Check if the connection was successful
         if(this.con !=null){
             System.out.println("Connected to database");
         }
     
        }catch(SQLException ex){
        
+           // Print other SQL exceptions for debugging
            ex.printStackTrace();
        }
 
@@ -44,6 +48,6 @@ public class DBConnectionAppointment {
     
   public Connection getConnection() {
     return this.con;
-}
+}  
 }
 

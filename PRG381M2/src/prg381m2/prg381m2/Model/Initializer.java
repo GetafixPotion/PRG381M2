@@ -3,35 +3,49 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package prg381m2.prg381m2.Model;
-
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.Connection;
 
+//This class is responsible for initializing the database structure
 public class Initializer {
     
-     private Connection con;
+    //Connection object to communicate with the database
+     public Connection con;
 
     // Constructor that receives a Connection
     public Initializer(Connection con) {
         this.con = con;
     }
-    
-    public void createTable(){
-    try{
-         String query = "CREATE TABLE IF NOT EXISTS Appointments ("
-                + "StudentID INT PRIMARY KEY, "
-                + "StudentName VARCHAR(25), "
-                + "CounselorID INT, "
-                + "`Date` DATE, "
-                + "`Time` TIME, "
-                + "Status VARCHAR(50), "
-                + "FOREIGN KEY (CounselorID) REFERENCES Counselors(id))";
-         
-         this.con.createStatement().execute(query);
-    } catch (SQLException ex) {
-            ex.printStackTrace();
+    //Creates appointment table.
+    public void createTable() {
+    try {
+        //Creates a statement object to execyte the SQL query
+        Statement stmt = con.createStatement();
+        
+        String sql = "CREATE TABLE Appointments (" +
+                     "StudentID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                     "StudentName VARCHAR(25), " +
+                     "CounselorName VARCHAR(25), " +
+                     "Date DATE, " +
+                     "Time TIME, " +
+                     "Status VARCHAR(50))";
+        
+        stmt.execute(sql);
+        System.out.println("Appointments table created.");
+        
+    } catch (SQLException e) {
+        
+        //checks if the table already exists if it does this error will appear X0Y32
+        if (e.getSQLState().equals("X0Y32")) {
+            System.out.println("Table already exists.");
+            
+        } else {
+            // Print other SQL exceptions for debugging
+            e.printStackTrace();
+        }
     }
-    
-    }
+}
+
     
 }

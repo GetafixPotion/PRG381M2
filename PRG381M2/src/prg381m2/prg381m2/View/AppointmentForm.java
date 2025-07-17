@@ -4,27 +4,48 @@
  */
 package prg381m2.prg381m2.View;
 
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import prg381m2.prg381m2.Model.AppointmentDA;
-import prg381m2.prg381m2.Model.Appointment;
-import prg381m2.prg381m2.Model.DBConnectionAppointment;
-import java.sql.Connection;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
+
+//class imports
+import prg381m2.prg381m2.Model.Appointment;
+import prg381m2.prg381m2.Model.AppointmentDA;
+import prg381m2.prg381m2.Model.DBConnectionAppointment;
+import prg381m2.prg381m2.Model.Initializer;
 
 
  
     
 public class AppointmentForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Appointment
-     */
-    public AppointmentForm() {
-        initComponents();
+  
+     // Creates new form Appointment
+     
+    //Database connection and access object
+    public Connection conn;
+    public AppointmentDA dao;
+    
+   public AppointmentForm() {
+    //auto generate gui setup
+    initComponents();
+     
+           try {
+            DBConnectionAppointment db = new DBConnectionAppointment();
+            db.connect();
+
+            Initializer initializer = new Initializer(db.getConnection());
+            initializer.createTable();
+
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -41,18 +62,18 @@ public class AppointmentForm extends javax.swing.JFrame {
         lblTime = new javax.swing.JLabel();
         lblCounselor = new javax.swing.JLabel();
         javax.swing.JLabel lblStudent = new javax.swing.JLabel();
-        javax.swing.JButton btnUpdate = new javax.swing.JButton();
-        javax.swing.JButton BtnAdd = new javax.swing.JButton();
-        javax.swing.JButton btnView = new javax.swing.JButton();
-        javax.swing.JButton BtnCancel = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        BtnAdd = new javax.swing.JButton();
+        btnView = new javax.swing.JButton();
+        BtnCancel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAppointments = new javax.swing.JTable();
-        javax.swing.JFormattedTextField txtDate = new javax.swing.JFormattedTextField();
-        javax.swing.JComboBox<String> cmbCounselor = new javax.swing.JComboBox<>();
-        javax.swing.JComboBox<String> cmbTime = new javax.swing.JComboBox<>();
+        txtdate = new javax.swing.JFormattedTextField();
+        cmbCounselorname = new javax.swing.JComboBox<>();
+        cmbtime = new javax.swing.JComboBox<>();
         BtnHome = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        txtName = new javax.swing.JTextField();
+        txtStudentName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 153, 0));
@@ -126,13 +147,15 @@ public class AppointmentForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblAppointments);
 
-        txtDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        txtDate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtdate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        txtdate.setText("y/MM/dd");
+        txtdate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        cmbCounselor.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cmbCounselorname.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cmbCounselorname.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Heiner", "Jana", "Demica" }));
 
-        cmbTime.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cmbTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00" }));
+        cmbtime.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cmbtime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00" }));
 
         BtnHome.setBackground(new java.awt.Color(255, 122, 53));
         BtnHome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -174,10 +197,10 @@ public class AppointmentForm extends javax.swing.JFrame {
                             .addComponent(lblStudent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtdate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbtime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbCounselorname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtStudentName, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -209,19 +232,19 @@ public class AppointmentForm extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStudent)
-                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addComponent(txtStudentName, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCounselor)
-                    .addComponent(cmbCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCounselorname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDate)
-                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTime)
-                    .addComponent(cmbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbtime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnAdd)
@@ -239,36 +262,52 @@ public class AppointmentForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAddActionPerformed
-        String StudentName = txtName.getText().trim();
-        String CounselorName = (String) cmbCounselor.getSelectedItem();
-        String DateText = txtDate.getText().trim();
-        String TimeText = (String) cmbTime.getSelectedItem();
-        String Status = "Scheduled";
-        
-        //Validation for empty fields
-        if (StudentName.isEmpty() || CounselorName == null || DateText.isEmpty() || TimeText == null) {
-        JOptionPane.showMessageDialog(this, "Please fill in all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
-        
-        
-        // Parse date and time
-          LocalDate appointmentDate = LocalDate.parse(DateText, DateTimeFormatter.ofPattern("y/MM/dd"));
-          LocalTime appointmentTime = LocalTime.parse(TimeText, DateTimeFormatter.ofPattern("HH:mm"));
+         //creating varibles and assigning input values
+        String studentName = txtStudentName.getText().trim();
+        String counselorName = (String) cmbCounselorname.getSelectedItem();
+        String dateText = txtdate.getText().trim();
+        String timeText = (String) cmbtime.getSelectedItem();
+        String status = "Scheduled";
 
-       
-        //Appointment object
-        Appointment newAppointment = new Appointment(0, StudentName, CounselorName,appointmentDate, appointmentTime, Status);
+        // Validation for empty fields
+        if (studentName.isEmpty() || counselorName == null || dateText.isEmpty() || timeText == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        DBConnectionAppointment dbConn = new DBConnectionAppointment();
-        Connection conn = dbConn.getConnection();
-        
-       // Save to DB
-        AppointmentDA dao = new AppointmentDA(conn);
-        dao.add(newAppointment);
-  
-        
+        try {
+            // Parse date and time
+            LocalDate appointmentDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("M/d/yy")); // Adjust format as needed
+            LocalTime appointmentTime = LocalTime.parse(timeText, DateTimeFormatter.ofPattern("HH:mm"));
 
-       
+            // Create Appointment object
+            Appointment newAppointment = new Appointment(0, studentName, counselorName, appointmentDate, appointmentTime, status);
+
+            // Add to database
+            dao.add(newAppointment);
+            JOptionPane.showMessageDialog(this, "Appointment added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear input fields
+            txtStudentName.setText("");
+            txtdate.setText("");
+            cmbCounselorname.setSelectedIndex(0);
+            cmbtime.setSelectedIndex(0);
+
+            // Refresh table
+            btnViewActionPerformed(evt);
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(this, "Invalid date or time format. Please use MM/dd/yy for date and HH:mm for time.", 
+                "Format Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error adding appointment: " + e.getMessage(), 
+                "Database Error", JOptionPane.ERROR_MESSAGE);
     }
+    
+    
+      
+
+       
+    
     }//GEN-LAST:event_BtnAddActionPerformed
 
     private void BtnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHomeActionPerformed
@@ -279,76 +318,96 @@ public class AppointmentForm extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnHomeActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        //Get row the user selected
+        ///get selected row                                     
         int selectedRow = tblAppointments.getSelectedRow();
-        
-        //Check if a row is selected 
+
+        // Check if a row is selected
         if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Please select an appointment to update.", "No Selection", JOptionPane.ERROR_MESSAGE);
-        return;
+            JOptionPane.showMessageDialog(this, "Please select an appointment to update.", "No Selection", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-       
-        //populate the selected row values into the textboxes and comboboxes
-        String StudentName = (String) tblAppointments.getValueAt(selectedRow, 0);
-        String CounselorName = (String) tblAppointments.getValueAt(selectedRow, 1);
-        String DateText = (String) tblAppointments.getValueAt(selectedRow, 2);
-        String TimeText = (String) tblAppointments.getValueAt(selectedRow, 3);
 
-        //Check if the combo boxes and textboxes is empty
-        if (StudentName.isEmpty() || CounselorName == null || DateText.isEmpty() || TimeText == null) {
-             JOptionPane.showMessageDialog(this, "Please fill in all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
-              return;
-            }
-    
-          // Parse date and time
-          LocalDate appointmentDate = LocalDate.parse(DateText, DateTimeFormatter.ofPattern("y/MM/dd"));
-          LocalTime appointmentTime = LocalTime.parse(TimeText, DateTimeFormatter.ofPattern("HH:mm"));
-          
-           String Status = "Rescheduled";
-           
-           //Appointment object
-            Appointment updateAppointment = new Appointment(0, StudentName, CounselorName,appointmentDate, appointmentTime, Status);
+        // Extract appointment ID from table
+        int id = (int) tblAppointments.getValueAt(selectedRow, 0); 
 
-             DBConnectionAppointment dbConn = new DBConnectionAppointment();
-             Connection conn = dbConn.getConnection();
-        
-            // Save to DB
-            AppointmentDA dao = new AppointmentDA(conn);
-            dao.updateAppointment(updateAppointment);
+        // Get values from input fields
+        String studentName = txtStudentName.getText().trim();
+        String counselorName = (String) cmbCounselorname.getSelectedItem();
+        String dateText = txtdate.getText().trim();
+        String timeText = (String) cmbtime.getSelectedItem();
+        String status = "Rescheduled";
+
+        // Validate inputs
+        if (studentName.isEmpty() || counselorName == null || dateText.isEmpty() || timeText == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // Parse date and time
+            LocalDate appointmentDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("M/d/yy"));
+            LocalTime appointmentTime = LocalTime.parse(timeText, DateTimeFormatter.ofPattern("HH:mm"));
+
+            // Create Appointment object
+            Appointment updatedAppointment = new Appointment(id, studentName, counselorName, appointmentDate, appointmentTime, status);
+
+            // Update in database
+            dao.updateAppointment(updatedAppointment);
+            JOptionPane.showMessageDialog(this, "Appointment updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear input fields
+            txtStudentName.setText("");
+            txtdate.setText("");
+            cmbCounselorname.setSelectedIndex(0);
+            cmbtime.setSelectedIndex(0);
+
+            // Refresh table
+            btnViewActionPerformed(evt);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Invalid date or time format. Please use MM/dd/yy for date and HH:mm for time.", 
+                "Format Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating appointment: " + e.getMessage(), 
+                "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+
            
            
            
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void BtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelActionPerformed
-        //Get row the user selected
         int selectedRow = tblAppointments.getSelectedRow();
-        
-        //Check if a row is selected 
+    
+        // Check if a row is selected
         if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Please select an appointment to update.", "No Selection", JOptionPane.ERROR_MESSAGE);
-        return;
+            JOptionPane.showMessageDialog(this, "Please select an appointment to cancel.", "No Selection", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-       
-        int ID = (int) tblAppointments.getValueAt(selectedRow, 4);
-        DBConnectionAppointment dbConn = new DBConnectionAppointment();
-        Connection conn = dbConn.getConnection();
-        
-        AppointmentDA dao = new AppointmentDA(conn);
-        
-        dao.deleteAppointment(ID);
+
+        try {
+            // Get ID from table
+            int id = (int) tblAppointments.getValueAt(selectedRow, 0);
+
+            // Delete from database
+            dao.deleteAppointment(id);
+            JOptionPane.showMessageDialog(this, "Appointment canceled successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Refresh table
+            btnViewActionPerformed(evt);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error canceling appointment: " + e.getMessage(), 
+                "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
        
        
 
     }//GEN-LAST:event_BtnCancelActionPerformed
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
-        // Connect and get data
-        DBConnectionAppointment dbConn = new DBConnectionAppointment();
-        Connection conn = dbConn.getConnection();
-        
-        AppointmentDA da = new AppointmentDA(conn);
-        List<Appointment> list = da.getAllAppointments();
+        try {
+        // Get data using existing DAO
+        List<Appointment> list = dao.getAllAppointments();
 
         // Clear and fill table
         DefaultTableModel model = (DefaultTableModel) tblAppointments.getModel();
@@ -356,9 +415,18 @@ public class AppointmentForm extends javax.swing.JFrame {
 
         for (Appointment a : list) {
             model.addRow(new Object[] {
-                a.getId(), a.getStudentName(), a.getCounselorname(),
-                a.getAppointmentdate(), a.getAppointmentTime(), a.getStatus()
-            });}
+                a.getId(),
+                a.getStudentName(),
+                a.getCounselorname(),
+                a.getAppointmentdate().format(DateTimeFormatter.ofPattern("M/d/yy")),
+                a.getAppointmentTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                a.getStatus()
+            });
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error retrieving appointments: " + e.getMessage(), 
+            "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnViewActionPerformed
 
     
@@ -400,7 +468,13 @@ public class AppointmentForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnAdd;
+    private javax.swing.JButton BtnCancel;
     private javax.swing.JButton BtnHome;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnView;
+    private javax.swing.JComboBox<String> cmbCounselorname;
+    private javax.swing.JComboBox<String> cmbtime;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAppointment;
@@ -408,7 +482,8 @@ public class AppointmentForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblTime;
     private javax.swing.JTable tblAppointments;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtStudentName;
+    private javax.swing.JFormattedTextField txtdate;
     // End of variables declaration//GEN-END:variables
     
 
