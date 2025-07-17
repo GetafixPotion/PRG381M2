@@ -44,6 +44,6 @@ public class DBConnectionAppointment {
     
   public Connection getConnection() {
     return this.con;
-}  
+}
 }
 

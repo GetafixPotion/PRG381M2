@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package prg381m2.prg381m2.View;
-
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import prg381m2.prg381m2.Model.Feedback;
 
 /**
  *
@@ -13,12 +15,15 @@ import javax.swing.JOptionPane;
 public class FeedbackForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FeedbackForm.class.getName());
+    private Feedback feedback;
+    private DefaultTableModel tableModel;
 
-    /**
-     * Creates new form FeedbackForm
-     */
     public FeedbackForm() {
+        tableModel = new DefaultTableModel(new Object[]{"Rating", "Comments"}, 0);
         initComponents();
+        FeedbackTable.setModel(tableModel);
+        feedback = new Feedback(tableModel, FeedbackTable);
+             
     }
 
     /**
@@ -31,12 +36,12 @@ public class FeedbackForm extends javax.swing.JFrame {
     private void initComponents() {
 
         FeedbackPanel = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        MenuPanel = new javax.swing.JPanel();
+        MenuTxt = new javax.swing.JLabel();
         homeBtn = new javax.swing.JButton();
         exitBtn = new javax.swing.JButton();
         FeedbackTitleTxt = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        RatingPanel = new javax.swing.JPanel();
         RatingTxt = new javax.swing.JLabel();
         Star1 = new javax.swing.JRadioButton();
         Star3 = new javax.swing.JRadioButton();
@@ -48,15 +53,19 @@ public class FeedbackForm extends javax.swing.JFrame {
         CommentTxtArea = new javax.swing.JScrollPane();
         CommentsTxtArea = new javax.swing.JTextArea();
         SubmitBtn = new javax.swing.JButton();
+        FeedbackScrollPanel = new javax.swing.JScrollPane();
+        FeedbackTable = new javax.swing.JTable();
+        DeleteBtn = new javax.swing.JButton();
+        ViewBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         FeedbackPanel.setBackground(new java.awt.Color(255, 153, 0));
 
-        jPanel2.setBackground(new java.awt.Color(255, 102, 0));
+        MenuPanel.setBackground(new java.awt.Color(255, 102, 0));
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        jLabel1.setText("MENU");
+        MenuTxt.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        MenuTxt.setText("MENU");
 
         homeBtn.setBackground(new java.awt.Color(255, 0, 0));
         homeBtn.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -68,25 +77,25 @@ public class FeedbackForm extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout MenuPanelLayout = new javax.swing.GroupLayout(MenuPanel);
+        MenuPanel.setLayout(MenuPanelLayout);
+        MenuPanelLayout.setHorizontalGroup(
+            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuPanelLayout.createSequentialGroup()
+                .addGroup(MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MenuPanelLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(MenuTxt))
+                    .addGroup(MenuPanelLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(homeBtn)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        MenuPanelLayout.setVerticalGroup(
+            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(MenuTxt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(homeBtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -106,8 +115,8 @@ public class FeedbackForm extends javax.swing.JFrame {
         FeedbackTitleTxt.setForeground(new java.awt.Color(255, 255, 255));
         FeedbackTitleTxt.setText("Feedback");
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 102, 0)));
+        RatingPanel.setBackground(new java.awt.Color(204, 204, 204));
+        RatingPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 102, 0)));
 
         RatingTxt.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         RatingTxt.setForeground(new java.awt.Color(0, 0, 0));
@@ -179,39 +188,39 @@ public class FeedbackForm extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout RatingPanelLayout = new javax.swing.GroupLayout(RatingPanel);
+        RatingPanel.setLayout(RatingPanelLayout);
+        RatingPanelLayout.setHorizontalGroup(
+            RatingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RatingPanelLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(Star1)
                 .addGap(57, 57, 57)
                 .addComponent(Star2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(RatingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RatingPanelLayout.createSequentialGroup()
                         .addComponent(Star3)
                         .addGap(54, 54, 54)
                         .addComponent(Star4)
                         .addGap(43, 43, 43)
                         .addComponent(Star5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RatingPanelLayout.createSequentialGroup()
                         .addComponent(RatingTxt)
                         .addGap(111, 111, 111)))
                 .addGap(39, 39, 39))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(RatingPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(RatingClearBtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        RatingPanelLayout.setVerticalGroup(
+            RatingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RatingPanelLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(RatingTxt)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(RatingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Star1)
                     .addComponent(Star5)
                     .addComponent(Star3)
@@ -246,28 +255,72 @@ public class FeedbackForm extends javax.swing.JFrame {
             }
         });
 
+        FeedbackTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        FeedbackScrollPanel.setViewportView(FeedbackTable);
+
+        DeleteBtn.setBackground(new java.awt.Color(255, 51, 51));
+        DeleteBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        DeleteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        DeleteBtn.setText("Delete");
+        DeleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteBtnActionPerformed(evt);
+            }
+        });
+
+        ViewBtn.setBackground(new java.awt.Color(255, 51, 51));
+        ViewBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ViewBtn.setForeground(new java.awt.Color(255, 255, 255));
+        ViewBtn.setText("View");
+        ViewBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ViewBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout FeedbackPanelLayout = new javax.swing.GroupLayout(FeedbackPanel);
         FeedbackPanel.setLayout(FeedbackPanelLayout);
         FeedbackPanelLayout.setHorizontalGroup(
             FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FeedbackPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(MenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(FeedbackPanelLayout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(FeedbackTitleTxt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
-                        .addComponent(exitBtn)
+                        .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(FeedbackPanelLayout.createSequentialGroup()
+                                .addGap(221, 221, 221)
+                                .addComponent(FeedbackTitleTxt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                                .addComponent(exitBtn))
+                            .addGroup(FeedbackPanelLayout.createSequentialGroup()
+                                .addGap(111, 111, 111)
+                                .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(SubmitBtn)
+                                    .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(CommentTxtArea)
+                                        .addComponent(CommentTxt)
+                                        .addComponent(RatingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(FeedbackPanelLayout.createSequentialGroup()
-                        .addGap(111, 111, 111)
+                        .addGap(50, 50, 50)
                         .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(SubmitBtn)
-                            .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(CommentTxtArea)
-                                .addComponent(CommentTxt)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(FeedbackPanelLayout.createSequentialGroup()
+                                .addComponent(DeleteBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ViewBtn))
+                            .addComponent(FeedbackScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         FeedbackPanelLayout.setVerticalGroup(
@@ -276,7 +329,7 @@ public class FeedbackForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(FeedbackPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(MenuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addGroup(FeedbackPanelLayout.createSequentialGroup()
                         .addComponent(exitBtn)
@@ -285,14 +338,20 @@ public class FeedbackForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(FeedbackTitleTxt)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(RatingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CommentTxt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CommentTxtArea, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(SubmitBtn)
-                .addGap(0, 258, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addComponent(FeedbackScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(FeedbackPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(DeleteBtn)
+                    .addComponent(ViewBtn))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -368,6 +427,7 @@ public class FeedbackForm extends javax.swing.JFrame {
     }//GEN-LAST:event_RatingClearBtnActionPerformed
 
     private void SubmitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitBtnActionPerformed
+        try {
         int rating = 0;
         if (Star5.isSelected()) rating = 5;
         else if (Star4.isSelected()) rating = 4;
@@ -375,25 +435,49 @@ public class FeedbackForm extends javax.swing.JFrame {
         else if (Star2.isSelected()) rating = 2;
         else if (Star1.isSelected()) rating = 1;
         String comments = CommentsTxtArea.getText().trim();
+
+        if (rating == 0) {
+            JOptionPane.showMessageDialog(this, "Please select a rating.");
+            return;
+        }
+
+        feedback.setFeedbackData(rating, comments);
+        feedback.addData();
         JOptionPane.showMessageDialog(this, "Feedback submitted");
-        
+
         Star1.setSelected(false);
         Star2.setSelected(false);
         Star3.setSelected(false);
         Star4.setSelected(false);
         Star5.setSelected(false);
         CommentsTxtArea.setText("");
+    } catch (IllegalArgumentException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
     }//GEN-LAST:event_SubmitBtnActionPerformed
+
+    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
+        int selectedRow = FeedbackTable.getSelectedRow();
+        if (selectedRow != -1) {
+            feedback.removeData(selectedRow);
+            JOptionPane.showMessageDialog(this, "Feedback deleted");
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.");
+        }
+    }//GEN-LAST:event_DeleteBtnActionPerformed
+
+    private void ViewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewBtnActionPerformed
+        if (tableModel.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No feedback available to display in the table.", "View Feedback", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        tableModel.fireTableDataChanged();
+    }//GEN-LAST:event_ViewBtnActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -404,9 +488,6 @@ public class FeedbackForm extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new FeedbackForm().setVisible(true));
     }
 
@@ -414,9 +495,15 @@ public class FeedbackForm extends javax.swing.JFrame {
     private javax.swing.JLabel CommentTxt;
     private javax.swing.JScrollPane CommentTxtArea;
     private javax.swing.JTextArea CommentsTxtArea;
+    private javax.swing.JButton DeleteBtn;
     private javax.swing.JPanel FeedbackPanel;
+    private javax.swing.JScrollPane FeedbackScrollPanel;
+    private javax.swing.JTable FeedbackTable;
     private javax.swing.JLabel FeedbackTitleTxt;
+    private javax.swing.JPanel MenuPanel;
+    private javax.swing.JLabel MenuTxt;
     private javax.swing.JButton RatingClearBtn;
+    private javax.swing.JPanel RatingPanel;
     private javax.swing.JLabel RatingTxt;
     private javax.swing.JRadioButton Star1;
     private javax.swing.JRadioButton Star2;
@@ -424,10 +511,8 @@ public class FeedbackForm extends javax.swing.JFrame {
     private javax.swing.JRadioButton Star4;
     private javax.swing.JRadioButton Star5;
     private javax.swing.JButton SubmitBtn;
+    private javax.swing.JButton ViewBtn;
     private javax.swing.JButton exitBtn;
     private javax.swing.JButton homeBtn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
