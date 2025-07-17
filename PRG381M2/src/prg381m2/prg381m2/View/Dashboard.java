@@ -4,8 +4,6 @@
  */
 package prg381m2.prg381m2.View;
 
-import prg381m2.CounselorManagement;
-
 /**
  *
  * @author Heiner

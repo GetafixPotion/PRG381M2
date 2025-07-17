@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package prg381m2;
+package prg381m2.prg381m2.View;
 import prg381m2.prg381m2.View.Dashboard;
+import prg381m2.prg381m2.Model.DBConnection;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;//used to manipulate data inside JTable
+import prg381m2.prg381m2.Model.DBConnection;
 
 /**
  *
