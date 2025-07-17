@@ -24,51 +24,42 @@ public class AppointmentDA {
      
     public boolean add(Appointment appointment){
     
-        try{
-        //Build query string with concatenation
-        String query = "INSERT INTO Appointments VALUES (" 
-                + appointment.getId() + ", '" 
-                + appointment.getStudentName() + "', " 
-                + appointment.getCounselorname() + ", '" 
-                + appointment.getAppointmentdate().toString() + "', '" 
-                + appointment.getAppointmentTime().toString() + "', '" 
-                + appointment.getStatus() + "')";
-            
-            this.con.createStatement().execute(query);
-            return true;
-            
-        } catch (SQLException ex) {
-            
-            //SQL errors,and returns a false if theres errors
-            ex.printStackTrace();
-            return false;
-        }
+        String query = "INSERT INTO Appointments (StudentName, CounselorName, Date, Time, Status) VALUES (?, ?, ?, ?, ?)";
+
+    try (PreparedStatement pstmt = con.prepareStatement(query)) {
+        pstmt.setString(1, appointment.getStudentName());
+        pstmt.setString(2, appointment.getCounselorname());
+        pstmt.setDate(3, java.sql.Date.valueOf(appointment.getAppointmentdate()));
+        pstmt.setTime(4, java.sql.Time.valueOf(appointment.getAppointmentTime()));
+        pstmt.setString(5, appointment.getStatus());
+
+        pstmt.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
     
     }
     
     public boolean updateAppointment(Appointment appointment){
         
-        try{
-            //SQL query with new appointment data
-            String query = "UPDATE Appointments SET "
-                + "StudentName='" + appointment.getStudentName() + "', "
-                + "CounselorName=" + appointment.getCounselorname() + ", "
-                + "Date='" + appointment.getAppointmentdate().toString() + "', "
-                + "Time='" + appointment.getAppointmentTime().toString() + "', "
-                + "Status='" + appointment.getStatus() + "' "
-                + "WHERE StudentID=" + appointment.getId();
-            
-            //execute query
-            this.con.createStatement().execute(query);
-            //return true if query is executed
-            return true;
-            
-        }catch(SQLException ex) {
-           //SQL errors,and returns a false if theres errors
-            ex.printStackTrace();
-            
-            return false;
-        }
+        String sql = "UPDATE Appointments SET StudentName=?, CounselorName=?, Date=?, Time=?, Status=? WHERE StudentID=?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, appointment.getStudentName());
+        ps.setString(2, appointment.getCounselorname());
+        ps.setDate(3, java.sql.Date.valueOf(appointment.getAppointmentdate()));
+        ps.setTime(4, java.sql.Time.valueOf(appointment.getAppointmentTime()));
+        ps.setString(5, appointment.getStatus());
+        ps.setInt(6, appointment.getId());
+        int rowsUpdated = ps.executeUpdate();
+        
+        //return true if atleast one row was updated successfully
+        return rowsUpdated > 0;
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        return false;
+    }
     }
 
     public boolean deleteAppointment(int id) {
@@ -93,7 +84,7 @@ public class AppointmentDA {
         //appointment variable created and set to 0 
         Appointment appt = null;
         try {
-            String query = "SELECT * FROM Appointments WHERE StudentID " + id;
+            String query = "SELECT * FROM Appointments WHERE StudentID= " + id;
 
             //execute the query and store result
             ResultSet rs = this.con.createStatement().executeQuery(query);
