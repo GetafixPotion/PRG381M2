@@ -6,7 +6,7 @@ package prg381m2;
 import prg381m2.prg381m2.View.Dashboard;
 import javax.swing.JOptionPane;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel;//used to manipulate data inside JTable
 
 /**
  *
@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CounselorManagement extends javax.swing.JFrame {
     
-DBConnection db = new DBConnection();
+DBConnection db = new DBConnection();//instance of DBconnection class to handle the operatins
     
     /**
      * Creates new form CounselorManagement
@@ -25,7 +25,7 @@ DBConnection db = new DBConnection();
         db.connect();
         db.createTable(); // oonly run once or handle it with IF NOT EXISTS logic
     } catch (ClassNotFoundException ex) {
-        ex.printStackTrace();
+        ex.printStackTrace();//erors caught and printed
     
     }
          
@@ -310,7 +310,7 @@ DBConnection db = new DBConnection();
             return;
         }
 
-        db.delete(name);
+        db.delete(name);//calls db.delete(name) om te delete(method)
         JOptionPane.showMessageDialog(this, "Counselor deleted.");
 
         nameCounselor.setText("");
@@ -342,8 +342,8 @@ DBConnection db = new DBConnection();
         DefaultTableModel model = (DefaultTableModel) counselorTable.getModel();
         model.setRowCount(0); // Clear previous rows
 
-for(String[] row: db.view()) {
-    model.addRow(row);
+for(String[] row: db.view()) {//db.view is called,  returns arraylist of data
+    model.addRow(row);//into table
 }
 
     }//GEN-LAST:event_viewAllCounselorsBtnActionPerformed
@@ -353,7 +353,7 @@ for(String[] row: db.view()) {
         String name = nameCounselor.getText();
         String specializationText = (String) specialization.getSelectedItem();
         String availability = availibility.getText();
-
+//validates the fields
         if (name.isEmpty() || specializationText == null || availability.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "Please enter all fields",
@@ -407,7 +407,7 @@ for(String[] row: db.view()) {
             java.util.logging.Logger.getLogger(CounselorManagement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+//shows UI
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
