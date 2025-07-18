@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package prg381m2.prg381m2.View;
-import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import prg381m2.prg381m2.Model.Feedback;
@@ -411,11 +410,12 @@ public class FeedbackForm extends javax.swing.JFrame {
     }//GEN-LAST:event_Star4ActionPerformed
 
     private void Star5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Star5ActionPerformed
-        Star1.setSelected(true);  // Light up all stars
+        Star1.setSelected(true);  
         Star2.setSelected(true);
         Star3.setSelected(true);
         Star4.setSelected(true);
         Star5.setSelected(true);
+        //highlights all stars based on rating given
     }//GEN-LAST:event_Star5ActionPerformed
 
     private void RatingClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RatingClearBtnActionPerformed
@@ -424,6 +424,7 @@ public class FeedbackForm extends javax.swing.JFrame {
         Star3.setSelected(false);
         Star4.setSelected(false);
         Star5.setSelected(false);
+        //clears the rating
     }//GEN-LAST:event_RatingClearBtnActionPerformed
 
     private void SubmitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitBtnActionPerformed
@@ -457,12 +458,12 @@ public class FeedbackForm extends javax.swing.JFrame {
     }//GEN-LAST:event_SubmitBtnActionPerformed
 
     private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
-        int selectedRow = FeedbackTable.getSelectedRow();
+        int selectedRow = FeedbackTable.getSelectedRow();//gets the row you selected in the feedback table
         if (selectedRow != -1) {
             feedback.removeData(selectedRow);
             JOptionPane.showMessageDialog(this, "Feedback deleted");
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a row to delete.");
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.");//displays a message if no row is selected.
         }
     }//GEN-LAST:event_DeleteBtnActionPerformed
 
