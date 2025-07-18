@@ -4,13 +4,13 @@
  */
 package prg381m2.prg381m2.Model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.sql.PreparedStatement;
+import java.sql.Connection;//Connection is used to connect the app to the database
+import java.sql.DriverManager;//helps Java talk to your specific database type --- >like PostgreSQL
+import java.sql.SQLException;//handle database-related errors
+import java.sql.Statement;//statement class to run SQL queries 
+import java.sql.ResultSet;//Use it to go through your query results row by row
+import java.util.ArrayList;//To store dynamic lists of objects
+import java.sql.PreparedStatement;//Used to send parameterized SQL queries to the database 
 
 
 /**

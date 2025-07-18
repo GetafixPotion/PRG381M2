@@ -4,14 +4,14 @@
  */
 package prg381m2.prg381m2.View;
 
-import javax.swing.*;
+import javax.swing.*;//Enables you to use GUI components like
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeParseException;//This class handles errors when parsing invalid dates or times.
 import java.util.List;
-import java.sql.Connection;
-import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;//This imports the Connection class from JDBC
+import javax.swing.table.DefaultTableModel;//Used to populate and update a JTable dynamically
 
 //class imports
 import prg381m2.prg381m2.Model.Appointment;
